@@ -16,7 +16,7 @@ public class Game {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "<age", nullable = false)
+    @Column(name = "age", nullable = false)
     private String age;
 
     @ManyToOne

@@ -5,7 +5,12 @@ import com.ccsw.tutorial.game.model.GameDto;
 
 import java.util.List;
 
+/**
+ * @author ccsw
+ *
+ */
 public interface GameService {
+
     /**
      * Recupera los juegos filtrando opcionalmente por título y/o categoría
      *
@@ -22,4 +27,5 @@ public interface GameService {
      * @param dto datos de la entidad
      */
     void save(Long id, GameDto dto);
+
 }

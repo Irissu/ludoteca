@@ -5,7 +5,12 @@ import com.ccsw.tutorial.category.model.CategoryDto;
 
 import java.util.List;
 
+/**
+ * @author ccsw
+ *
+ */
 public interface CategoryService {
+
     /**
      * Recupera una {@link Category} a partir de su ID
      *
@@ -23,13 +28,14 @@ public interface CategoryService {
 
     /**
      * Método para crear o actualizar una {@link Category}
+     *
      * @param id PK de la entidad
      * @param dto datos de la entidad
      */
     void save(Long id, CategoryDto dto);
 
     /**
-     * Método para borrar una categoría
+     * Método para borrar una {@link Category}
      *
      * @param id PK de la entidad
      */
