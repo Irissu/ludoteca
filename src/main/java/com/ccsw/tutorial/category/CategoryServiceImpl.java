@@ -20,6 +20,15 @@ public class CategoryServiceImpl implements CategoryService {
      * {@inheritDoc}
      */
     @Override
+    public Category get(Long id) {
+
+        return this.categoryRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Category> findAll() {
 
         // return new ArrayList<CategoryDto>(this.categories.values());
@@ -39,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
             category = new Category();
         } else {
             // category = this.categories.get(id);
-            category = this.categoryRepository.findById(id).orElse(null);
+            category = this.get(id);
         }
 
         category.setName(dto.getName());
@@ -53,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         // this.categories.remove(id);
 
-        if (this.categoryRepository.findById(id).orElse(null) == null) {
+        if (this.get(id) == null) {
             throw new Exception("Not exists");
         }
 
