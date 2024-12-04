@@ -20,14 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 // test de integración: test a un determinado endpoint que conlleva inicializacion de Spring (bbdd incluida) y hacen llamada RESt para comprobar flujo completo de API
 
-/** Prueba de listado: recupera Clientes
- * Prueba creacion: crea nuevo cliente
- * Prueba creacion incorrecta: crea nuevo cliente que ya existe
- * Prueba modificacion correcta de un cliente existente
- * Prueba modificacion incorrecta de un cliente no existe
- * Prueba de borrado correcta, borra cliente que existe
- * Prueba de borrado correcta, borra cliente que no existe
- * */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) //  inicializar el contexto de Spring cada vez que se inician los test de jUnit
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // test transaccionales, cuando termina cada test,  Spring hace reset parcial dejará la BBDD como estaba inicialmente.
 public class ClientIT {
