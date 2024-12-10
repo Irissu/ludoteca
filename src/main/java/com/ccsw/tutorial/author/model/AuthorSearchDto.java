@@ -4,11 +4,11 @@ import com.ccsw.tutorial.common.pagination.PageableRequest;
 
 /**
  * @author ccsw
- *
+ * objeto que contenga los datos de la página a consultar. Paginador
  */
 public class AuthorSearchDto {
 
-    private PageableRequest pageable;
+    private PageableRequest pageable; // objeto tipo pageableRequest
 
     public PageableRequest getPageable() {
         return pageable;

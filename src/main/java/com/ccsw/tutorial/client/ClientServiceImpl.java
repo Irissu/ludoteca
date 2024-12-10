@@ -2,7 +2,7 @@ package com.ccsw.tutorial.client;
 
 import com.ccsw.tutorial.client.model.Client;
 import com.ccsw.tutorial.client.model.ClientDto;
-import com.ccsw.tutorial.exception.ClientException;
+import com.ccsw.tutorial.exception.ClientNameExists;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,15 +30,11 @@ public class ClientServiceImpl implements ClientService {
     public void save(Long id, ClientDto dto) {
         Client clientNameDetails = this.clientRepository.findByName(dto.getName());
         if (clientNameDetails != null) {
-            throw new ClientException("The client already exists");
-        }
-        Client client;
-        if (id == null) {
-            client = new Client();
-        } else {
-            client = this.get(id);
+            throw new ClientNameExists("The client already exists");
         }
 
+        Client client;
+        client = (id == null) ? new Client() : this.get(id);
         client.setName(dto.getName());
 
         this.clientRepository.save(client);

@@ -15,9 +15,7 @@ public class PageableRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int pageNumber;
-
     private int pageSize;
-
     private List<SortRequest> sort;
 
     public PageableRequest() {
