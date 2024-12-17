@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Tag(name = "client", description = "API for Client") //  ayuda a generar documentación automática
-@RequestMapping(value = "/client") // nos permiten definir las rutas de acceso
-@RestController // anotacion que indica que  las operaciones son de tipo Rest
+@Tag(name = "client", description = "API for Client")
+@RequestMapping(value = "/client")
+@RestController
 @CrossOrigin(origins = "*")
 
 public class ClientController {
@@ -23,11 +23,9 @@ public class ClientController {
     @Autowired
     ModelMapper mapper;
 
-    // Metodo que recupera un listado de todos los Clientes
     @Operation(summary = "Find", description = "Method that return all Clients")
     @RequestMapping(path = "", method = RequestMethod.GET)
     public List<ClientDto> findAll() {
-        //        return new ArrayList<ClientDto>(this.clients.values());
         List<Client> clients = this.clientService.findAll();
         return clients.stream().map(e -> mapper.map(e, ClientDto.class)).collect(Collectors.toList());
     }
@@ -40,7 +38,7 @@ public class ClientController {
 
     @Operation(summary = "Delete", description = "Method that deletes a client")
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable(name = "id") Long id) throws Exception { // el servicio lleva exception
+    public void delete(@PathVariable(name = "id") Long id) throws Exception {
         this.clientService.delete(id);
     }
 

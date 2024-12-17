@@ -1,15 +1,5 @@
 package com.ccsw.tutorial.client;
 
-// test unitarios: pruebas relativas a la calidad estatica del codigo de una determinada operacion de la capa Service, no trabajan con datos directamente,
-// por lo que no inicializan contexto de SpringBoot (@ExtendWith indica a Spring que no debe inicializar el contexto)
-/*
- * +INFO: https://www.baeldung.com/mockito-verify
- * Prueba logica de la operacion de consulta de Cliente
- * Prueba logica de la operacion de creacion de Cliente
- * Prueba logica de la operacion de modificacion de Cliente
- * Prueba logica de la operacion de borrado de Cliente
- * */
-
 import com.ccsw.tutorial.client.model.Client;
 import com.ccsw.tutorial.client.model.ClientDto;
 import org.junit.jupiter.api.Test;
@@ -32,17 +22,16 @@ public class ClientTest {
     public static final Long EXISTS_CLIENT_ID = 1L;
     public static final Long NOT_EXISTS_CLIENT_ID = 0L;
 
-    @Mock// invoca al repository en un test
+    @Mock
     private ClientRepository clientRepository;
 
-    @InjectMocks // simula respuesta ficticia
+    @InjectMocks
     private ClientServiceImpl clientService;
 
-    //    Returns a list of all clients
     @Test
     public void findAllShouldReturnAllClients() {
         List<Client> list = new ArrayList<>();
-        list.add(mock(Client.class)); // añadimos cliente ficticio con mock
+        list.add(mock(Client.class));
         list.add(mock(Client.class));
 
         when(clientRepository.findAll()).thenReturn(list);
@@ -50,11 +39,11 @@ public class ClientTest {
 
         assertNotNull(clients);
         assertEquals(2, clients.size());
-    } // puedo hacer otro igual pero que falle
+    }
 
     @Test
     public void getExistsClientIdShouldReturnClient() {
-        Client client = mock(Client.class); // cliente falso
+        Client client = mock(Client.class);
 
         when(client.getId()).thenReturn(1L);
         when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
@@ -75,10 +64,8 @@ public class ClientTest {
         assertNull(clientResponse);
     }
 
-    // test para save, edit y delete
     @Test
     public void saveNotExistsClientIdShouldInsert() {
-        // recuerda que al guardar con save pasamos un Dto que se transformará a Entity
         ClientDto newClientDto = new ClientDto();
         newClientDto.setName("Edward Elric");
 
@@ -87,25 +74,6 @@ public class ClientTest {
 
         verify(clientRepository).save(client.capture());
         assertEquals(newClientDto.getName(), client.getValue().getName());
-    }
-
-    @Test
-    public void saveExistsClientNameShouldReturnError() {
-        // de momento vacio
-        // ClientDto newClientDto = new ClientDto();
-        // newClientDto.setName("Edward Elric");
-        //when(ClientRepository.getName()).thenReturn(Optional.of("Edward Elric"));
-    }
-
-    @Test
-    public void deleteClientIfItsNullShouldFailWithAnException() throws Exception {
-        // de momento vacio
-        //        @Test
-        //        void deleteActorById_throwsExceptionIfIDNotFound() {
-        //            assertThatExceptionOfType(NotFoundException.class)
-        //                    .isThrownBy(() -> service.deleteActorById(1L))
-        //                    .withMessage("Actor id not found - 1");
-        //        }
     }
 
     @Test

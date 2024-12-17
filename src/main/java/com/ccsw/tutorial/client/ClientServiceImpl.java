@@ -3,6 +3,7 @@ package com.ccsw.tutorial.client;
 import com.ccsw.tutorial.client.model.Client;
 import com.ccsw.tutorial.client.model.ClientDto;
 import com.ccsw.tutorial.exception.ClientNameExists;
+import com.ccsw.tutorial.exception.ClientNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client get(Long id) {
-        return this.clientRepository.findById(id).orElse(null);
+        return this.clientRepository.findById(id).orElseThrow(() -> new ClientNotFoundException("Client not found"));
     }
 
     @Override

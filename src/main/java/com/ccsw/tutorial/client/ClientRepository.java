@@ -4,6 +4,6 @@ import com.ccsw.tutorial.client.model.Client;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
-    //metodo personalizado para hacer una query - Derived Query Methods
+    
     Client findByName(String name);
 }

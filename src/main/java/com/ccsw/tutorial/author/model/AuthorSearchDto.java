@@ -8,7 +8,7 @@ import com.ccsw.tutorial.common.pagination.PageableRequest;
  */
 public class AuthorSearchDto {
 
-    private PageableRequest pageable; // objeto tipo pageableRequest
+    private PageableRequest pageable;
 
     public PageableRequest getPageable() {
         return pageable;

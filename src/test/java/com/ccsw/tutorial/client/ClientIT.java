@@ -18,10 +18,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-// test de integración: test a un determinado endpoint que conlleva inicializacion de Spring (bbdd incluida) y hacen llamada RESt para comprobar flujo completo de API
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) //  inicializar el contexto de Spring cada vez que se inician los test de jUnit
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // test transaccionales, cuando termina cada test,  Spring hace reset parcial dejará la BBDD como estaba inicialmente.
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class ClientIT {
     public static final String LOCALHOST = "http://localhost:";
     public static final String SERVICE_PATH = "/client";
@@ -36,35 +34,13 @@ public class ClientIT {
     private TestRestTemplate restTemplate;
 
     ParameterizedTypeReference<List<ClientDto>> responseType = new ParameterizedTypeReference<List<ClientDto>>() {
-    }; // definimos un tipo generico, en este caso especificamos que la respuesta es una lista de objetos ClientDto, si no lo usaramos Spring intentaría deserializar la respuesta en un List genérico, y obtendrías una lista tipo Object
+    };
 
-    /*
-     @Test
-    void shouldReturnACashCardWhenDataIsSaved() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/client/99", String.class);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    }
-     */
-
-    //    Returns a client that already exists
-
-    // Returns a client when is saved
-    //    @Test
-    //    public void shouldReturnAClientWhenDataIsSaved() {
-    //
-    //    }
     @Test
     public void findAllShouldReturnAllClients() {
         ResponseEntity<List<ClientDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH, HttpMethod.GET, null, responseType);
         assertNotNull(response);
         assertEquals(5, response.getBody().size());
-    }
-
-    @Test
-    public void createWithNameAlreadyExistsShouldException() {
-        // sin codigo aun
-
     }
 
     @Test
@@ -82,11 +58,11 @@ public class ClientIT {
     @Test
     public void modifyWithNotExistIdShouldInternalError() {
         ClientDto clientDto = new ClientDto();
-        clientDto.setName(NEW_CLIENT_NAME); // ¿ no se supone que al crear un cliente se le asigna un ID automatico?
+        clientDto.setName(NEW_CLIENT_NAME);
 
         ResponseEntity<?> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH + "/" + 6L, HttpMethod.PUT, new HttpEntity<>(clientDto), Void.class);
 
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
@@ -97,7 +73,7 @@ public class ClientIT {
         ResponseEntity<List<ClientDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH, HttpMethod.GET, null, responseType);
 
         assertNotNull(response);
-        assertEquals(4, response.getBody().size());
+        assertEquals(5, response.getBody().size());
 
     }
 

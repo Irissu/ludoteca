@@ -8,12 +8,10 @@ import com.ccsw.tutorial.common.pagination.PageableRequest;
 public class LoanSearchDto {
 
     private PageableRequest pageable;
-
     private Long idGame;
-
-    private Long idCustomer;
-
+    private Long idClient;
     private String date;
+    private String[] dates;
 
     public PageableRequest getPageable() {
         return pageable;
@@ -31,12 +29,12 @@ public class LoanSearchDto {
         this.idGame = idGame;
     }
 
-    public Long getIdCustomer() {
-        return idCustomer;
+    public Long getIdClient() {
+        return idClient;
     }
 
-    public void setIdCustomer(Long idCustomer) {
-        this.idCustomer = idCustomer;
+    public void setIdClient(Long idClient) {
+        this.idClient = idClient;
     }
 
     public String getDate() {
@@ -46,4 +44,13 @@ public class LoanSearchDto {
     public void setDate(String date) {
         this.date = date;
     }
+    
+    public String[] getDates() {
+        return dates;
+    }
+
+    public void setDates(String[] dates) {
+        this.dates = dates;
+    }
+
 }

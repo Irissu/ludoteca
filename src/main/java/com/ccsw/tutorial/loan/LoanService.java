@@ -23,6 +23,7 @@ public interface LoanService {
      * @param dto objeto que contiene los criterios de búsqueda y paginación
      * @return una página de préstamos que coinciden con los criterios de búsqueda
      */
+
     Page<Loan> findPage(LoanSearchDto dto);
 
     /**

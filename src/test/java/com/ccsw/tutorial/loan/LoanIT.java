@@ -1,7 +1,9 @@
 package com.ccsw.tutorial.loan;
 
+import com.ccsw.tutorial.client.model.ClientDto;
 import com.ccsw.tutorial.common.pagination.PageableRequest;
 import com.ccsw.tutorial.config.ResponsePage;
+import com.ccsw.tutorial.game.model.GameDto;
 import com.ccsw.tutorial.loan.model.LoanDto;
 import com.ccsw.tutorial.loan.model.LoanSearchDto;
 import org.junit.jupiter.api.Test;
@@ -40,7 +42,7 @@ public class LoanIT {
     private int port;
 
     @Autowired
-    private TestRestTemplate restTemplate; // solicitudes http en puerto aleatorio
+    private TestRestTemplate restTemplate;
 
     ParameterizedTypeReference<ResponsePage<LoanDto>> responseTypePage = new ParameterizedTypeReference<ResponsePage<LoanDto>>() {
     };
@@ -71,6 +73,67 @@ public class LoanIT {
         assertNotNull(response);
         assertEquals(TOTAL_LOANS, response.getBody().getTotalElements());
         assertEquals(elementsCount, response.getBody().getContent().size());
+    }
+
+    @Test
+    public void findLoanByClientIdShouldReturnClientIdLoan() {
+        LoanSearchDto searchDto = new LoanSearchDto();
+        searchDto.setIdClient(1L);
+        searchDto.setPageable(new PageableRequest(0, PAGE_SIZE));
+
+        ResponseEntity<ResponsePage<LoanDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH, HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+
+        assertNotNull(response);
+        assertEquals(1, response.getBody().getTotalElements());
+        assertEquals(1, response.getBody().getContent().size());
+    }
+
+    @Test
+    public void saveWithoutIdShouldCreateNewLoan() {
+
+        long newLoanId = TOTAL_LOANS + 1;
+        long newLoanSize = TOTAL_LOANS + 1;
+
+        GameDto gameDto = new GameDto();
+        gameDto.setId(1L);
+        ClientDto clientDto = new ClientDto();
+        clientDto.setId(1L);
+        LoanDto dto = new LoanDto();
+
+        dto.setClient(clientDto);
+        dto.setGame(gameDto);
+        dto.setLoanDate(LocalDate.parse("2025-11-15"));
+        dto.setReturnDate(LocalDate.parse("2025-11-25"));
+
+        System.out.println(dto);
+
+        restTemplate.exchange(LOCALHOST + port + SERVICE_PATH, HttpMethod.PUT, new HttpEntity<>(dto), Void.class);
+
+        LoanSearchDto searchDto = new LoanSearchDto();
+        searchDto.setPageable(new PageableRequest(0, PAGE_SIZE));
+
+        ResponseEntity<ResponsePage<LoanDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH, HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+        System.out.println("Raw response body: " + response.getBody());
+        assertNotNull(response);
+        assertEquals(newLoanSize, response.getBody().getTotalElements());
+
+    }
+
+    @Test
+    public void deleteWithExistsIdShouldDeleteLoan() {
+
+        long newLoanSize = TOTAL_LOANS - 1;
+
+        restTemplate.exchange(LOCALHOST + port + SERVICE_PATH + "/" + 5L, HttpMethod.DELETE, null, Void.class);
+
+        LoanSearchDto searchDto = new LoanSearchDto();
+        searchDto.setPageable(new PageableRequest(0, TOTAL_LOANS));
+
+        ResponseEntity<ResponsePage<LoanDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH, HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+
+        assertNotNull(response);
+        assertEquals(newLoanSize, response.getBody().getTotalElements());
+
     }
 
 }

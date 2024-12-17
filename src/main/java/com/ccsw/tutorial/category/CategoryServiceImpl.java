@@ -2,6 +2,7 @@ package com.ccsw.tutorial.category;
 
 import com.ccsw.tutorial.category.model.Category;
 import com.ccsw.tutorial.category.model.CategoryDto;
+import com.ccsw.tutorial.exception.CategoryNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import java.util.List;
 
 /**
  * @author ccsw
- *
  */
 @Service
 @Transactional
@@ -25,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category get(Long id) {
 
-        return this.categoryRepository.findById(id).orElse(null);
+        return this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category not found"));
     }
 
     /**

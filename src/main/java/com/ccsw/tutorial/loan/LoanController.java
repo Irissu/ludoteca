@@ -44,7 +44,6 @@ public class LoanController {
     @PostMapping
     public Page<LoanDto> findPage(@RequestBody LoanSearchDto dto) {
         Page<Loan> page = this.loanService.findPage(dto);
-        // hay  q mappear para pasar a dto
         return new PageImpl<>(page.getContent().stream().map(e -> mapper.map(e, LoanDto.class)).collect(Collectors.toList()), page.getPageable(), page.getTotalElements());
 
     }

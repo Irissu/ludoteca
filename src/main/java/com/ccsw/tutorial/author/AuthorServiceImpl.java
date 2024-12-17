@@ -3,6 +3,7 @@ package com.ccsw.tutorial.author;
 import com.ccsw.tutorial.author.model.Author;
 import com.ccsw.tutorial.author.model.AuthorDto;
 import com.ccsw.tutorial.author.model.AuthorSearchDto;
+import com.ccsw.tutorial.exception.AuthorNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import java.util.List;
 
 /**
  * @author ccsw
- *
  */
 @Service
 @Transactional
@@ -28,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author get(Long id) {
 
-        return this.authorRepository.findById(id).orElse(null);
+        return this.authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException("Author not found"));
     }
 
     /**
@@ -67,7 +67,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void delete(Long id) throws Exception {
 
-        //        if (this.authorRepository.findById(id).orElse(null) == null) {
         if (this.get(id) == null) {
             throw new Exception("Not exists");
         }

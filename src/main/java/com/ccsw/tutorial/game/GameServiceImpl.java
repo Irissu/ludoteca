@@ -3,6 +3,7 @@ package com.ccsw.tutorial.game;
 import com.ccsw.tutorial.author.AuthorService;
 import com.ccsw.tutorial.category.CategoryService;
 import com.ccsw.tutorial.common.criteria.SearchCriteria;
+import com.ccsw.tutorial.exception.GameNotFoundException;
 import com.ccsw.tutorial.game.model.Game;
 import com.ccsw.tutorial.game.model.GameDto;
 import jakarta.transaction.Transactional;
@@ -15,7 +16,6 @@ import java.util.List;
 
 /**
  * @author ccsw
- *
  */
 @Service
 @Transactional
@@ -29,6 +29,15 @@ public class GameServiceImpl implements GameService {
 
     @Autowired
     CategoryService categoryService;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Game get(Long id) {
+
+        return this.gameRepository.findById(id).orElseThrow(() -> new GameNotFoundException("Game not found"));
+    }
 
     /**
      * {@inheritDoc}

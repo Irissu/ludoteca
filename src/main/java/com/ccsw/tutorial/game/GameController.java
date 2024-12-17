@@ -27,7 +27,7 @@ public class GameController {
     /**
      * Método para recuperar una lista de {@link Game}
      *
-     * @param title título del juego
+     * @param title      título del juego
      * @param idCategory PK de la categoría
      * @return {@link List} de {@link GameDto}
      */
@@ -37,13 +37,13 @@ public class GameController {
 
         List<Game> games = gameService.find(title, idCategory);
 
-        return games.stream().map(e -> mapper.map(e, GameDto.class)).collect(Collectors.toList()); //recogemos como Entity, devolvemos como DTO
+        return games.stream().map(e -> mapper.map(e, GameDto.class)).collect(Collectors.toList());
     }
 
     /**
      * Método para crear o actualizar un {@link Game}
      *
-     * @param id PK de la entidad
+     * @param id  PK de la entidad
      * @param dto datos de la entidad
      */
     @Operation(summary = "Save or Update", description = "Method that saves or updates a Game")
